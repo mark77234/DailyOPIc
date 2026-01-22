@@ -15,6 +15,7 @@ export function LevelCarousel({
   onSelect,
   onDoubleConfirm,
 }: Props) {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [listReady, setListReady] = useState(false);
   const [hasAutoScrolled, setHasAutoScrolled] = useState(false);
 
@@ -37,6 +38,7 @@ export function LevelCarousel({
     const index = LEVEL_OPTIONS.findIndex((o) => o.id === selectedLevel);
     if (index < 0) return;
 
+    setCurrentIndex(index);
     listRef.current?.scrollToIndex({
       index,
       animated: false,
@@ -57,11 +59,25 @@ export function LevelCarousel({
 
     onSelect(level.id);
 
+    if (index === currentIndex) {
+      return;
+    }
+
     listRef.current?.scrollToIndex({
       index,
       animated: true,
       viewPosition: 0.5,
     });
+  };
+
+  const handleMomentumScrollEnd = (
+    event: { nativeEvent: { contentOffset: { x: number } } },
+  ) => {
+    const offsetX = event.nativeEvent.contentOffset.x;
+    const index = Math.round(offsetX / snapInterval);
+    const clampedIndex = Math.max(0, Math.min(index, LEVEL_OPTIONS.length - 1));
+
+    setCurrentIndex(clampedIndex);
   };
 
   return (
@@ -79,6 +95,7 @@ export function LevelCarousel({
           setListWidth(event.nativeEvent.layout.width);
           setListReady(true);
         }}
+        onMomentumScrollEnd={handleMomentumScrollEnd}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
           { useNativeDriver: false },
