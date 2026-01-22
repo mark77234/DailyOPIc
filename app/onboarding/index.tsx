@@ -28,7 +28,7 @@ export default function OnboardingScreen() {
   const listRef = useRef<FlatList<(typeof LEVEL_OPTIONS)[number]>>(null);
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth * 0.65;
-  const cardHeight = 340;
+  const cardHeight = 320;
   const cardGap = 16;
   const snapInterval = cardWidth + cardGap;
   const [listWidth, setListWidth] = useState(screenWidth);
@@ -171,7 +171,7 @@ export default function OnboardingScreen() {
 
               return (
                 <View
-                  className={`relative rounded-3xl border p-5 ${
+                  className={`relative rounded-3xl border p-12 ${
                     isActive
                       ? "border-primary-500 bg-primary-100"
                       : "border-gray-200 bg-white"
@@ -181,40 +181,44 @@ export default function OnboardingScreen() {
                     height: cardHeight,
                   }}
                 >
-                  <View className="flex-1 items-center justify-center">
+                  {/* ✅ 텍스트를 수직 중앙으로 */}
+                  <View className="flex-1 items-center justify-center gap-6">
                     <Text
-                      className={`text-center text-3xl font-semibold ${
+                      className={`text-center text-5xl font-semibold ${
                         isActive ? "text-primary-600" : "text-gray-900"
                       }`}
                     >
                       {item.title}
                     </Text>
+
                     <Text
-                      className={`mt-4 text-center text-sm leading-6 ${
+                      className={`text-center text-lg leading-6 ${
                         isActive ? "text-primary-600" : "text-gray-600"
                       }`}
                     >
                       {item.description}
                     </Text>
-                    <View className="mt-auto w-full items-center">
-                      <TouchableOpacity
-                        activeOpacity={0.9}
-                        onPress={() => handleConfirmLevel(index)}
-                        className={`rounded-full px-8 py-2.5 ${
-                          isActive
-                            ? "bg-primary-600"
-                            : "border border-primary-400 bg-white"
+                  </View>
+
+                  {/* ✅ 버튼은 아래 */}
+                  <View className="w-full items-center  ">
+                    <TouchableOpacity
+                      activeOpacity={0.9}
+                      onPress={() => handleConfirmLevel(index)}
+                      className={`rounded-full w-full py-3 ${
+                        isActive
+                          ? "bg-primary-600"
+                          : "border border-primary-400 bg-white"
+                      }`}
+                    >
+                      <Text
+                        className={`text-center text-sm font-semibold ${
+                          isActive ? "text-white" : "text-primary-600"
                         }`}
                       >
-                        <Text
-                          className={`text-center text-sm font-semibold ${
-                            isActive ? "text-white" : "text-primary-600"
-                          }`}
-                        >
-                          {isActive ? "선택 완료" : "선택"}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
+                        {isActive ? "선택 완료" : "선택"}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
               );
