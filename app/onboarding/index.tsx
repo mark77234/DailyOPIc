@@ -125,7 +125,7 @@ export default function OnboardingScreen() {
         contentContainerClassName="flex-grow px-6 pb-12 pt-10"
         bounces={false}
       >
-        <View className="my-12">
+        <View className="mt-12">
           <Text className="text-center text-3xl font-semibold text-gray-900">
             목표 오픽 등급을 선택하세요
           </Text>
@@ -134,8 +134,8 @@ export default function OnboardingScreen() {
           </Text>
         </View>
 
-        <View className="flex-1 justify-center">
-          <View className="items-center">
+        <View className="flex-1 justify-center ">
+          <View className="items-center gap-8">
             <FlatList
               ref={listRef}
               horizontal
