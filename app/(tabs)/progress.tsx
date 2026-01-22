@@ -83,7 +83,7 @@ export default function ProgressScreen() {
         ]
       );
     },
-    [removePracticeHistoryEntry]
+    []
   );
   const handleDeleteAll = useCallback(() => {
     if (history.length === 0) return;
@@ -103,7 +103,7 @@ export default function ProgressScreen() {
         },
       ]
     );
-  }, [clearPracticeHistory, history.length]);
+  }, [history.length]);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
