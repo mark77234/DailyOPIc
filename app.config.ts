@@ -74,9 +74,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     "expo-router",
 
-    /**
-     * Splash Screen (Light / Dark)
-     */
+    [
+      "react-native-google-mobile-ads",
+      {
+        iosAppId: "ca-app-pub-5460686409666356~8798659058",
+      },
+    ],
+
     [
       "expo-splash-screen",
       {
