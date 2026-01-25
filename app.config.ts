@@ -74,6 +74,21 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     "expo-router",
 
+    /**
+     * ✅ iOS Static Frameworks (필요시)
+     */
+    [
+      "expo-build-properties",
+      {
+        ios: {
+          useFrameworks: "static",
+        },
+      },
+    ],
+
+    /**
+     * ✅ Google AdMob (iOS)
+     */
     [
       "react-native-google-mobile-ads",
       {
@@ -81,6 +96,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
 
+    /**
+     * Splash Screen (Light / Dark)
+     */
     [
       "expo-splash-screen",
       {
