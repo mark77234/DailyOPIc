@@ -14,9 +14,9 @@ const ICONS = {
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
 
-  name: "Daily Opic",
+  name: "데일리 오픽",
   slug: "opic_mobile",
-  version: "1.0.2",
+  version: "1.0.3",
 
   extra: {
     eas: {
@@ -38,7 +38,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     supportsTablet: true,
     bundleIdentifier: "com.mark.opicmobile",
-    buildNumber: "2",
+    buildNumber: "3",
     icon: {
       light: ICONS.iosLight,
       dark: ICONS.iosDark,
