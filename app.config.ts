@@ -14,7 +14,7 @@ const ICONS = {
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
 
-  name: "Daily Opic",
+  name: "데일리 오픽",
   slug: "opic_mobile",
   version: "1.0.3",
 
