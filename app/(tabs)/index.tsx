@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import { useCallback, useEffect, useRef } from "react";
 import { Animated, Easing, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { AnalyzingSection } from "@/components/practice/analyzing-section";
 import { CompletedSection } from "@/components/practice/completed-section";
@@ -88,32 +89,7 @@ export default function PracticeScreen() {
     [handleSkipQuestion],
   );
 
-  const renderContent = () => {
-    if (isCompleted) {
-      const feedbackMessage = FEEDBACK_BY_LEVEL[evaluationResult.level];
-      const levelForSample = targetLevel ?? evaluationResult.level;
-      const fallbackSample = SAMPLE_ANSWER_BY_LEVEL[levelForSample];
-      const sampleAnswer =
-        currentQuestion?.exampleAnswer?.trim() || fallbackSample.en;
-
-      return (
-        <CompletedSection
-          evaluation={evaluationResult}
-          displayedTranscript={displayedTranscript}
-          feedbackMessage={feedbackMessage}
-          sampleAnswer={sampleAnswer}
-          targetLevel={targetLevel}
-          category={currentQuestion?.category}
-          tags={currentQuestion?.tags ?? []}
-          onNextQuestion={handleAdvance}
-        />
-      );
-    }
-
-    if (isAnalyzing) {
-      return <AnalyzingSection />;
-    }
-
+  const renderIdleContent = () => {
     if (!questionsLoading && !currentQuestion) {
       return (
         <View className="mt-10 items-center">
@@ -136,6 +112,39 @@ export default function PracticeScreen() {
     );
   };
 
+  if (isAnalyzing) {
+    return (
+      <SafeAreaView className="flex-1 bg-white">
+        <AnalyzingSection />
+      </SafeAreaView>
+    );
+  }
+
+  if (isCompleted) {
+    const feedbackMessage = FEEDBACK_BY_LEVEL[evaluationResult.level];
+    const levelForSample = targetLevel ?? evaluationResult.level;
+    const fallbackSample = SAMPLE_ANSWER_BY_LEVEL[levelForSample];
+    const sampleAnswer =
+      currentQuestion?.exampleAnswer?.trim() || fallbackSample.en;
+
+    return (
+      <SafeAreaView className="flex-1 bg-white">
+        <View className="flex-1 px-5 pt-4">
+          <CompletedSection
+            evaluation={evaluationResult}
+            displayedTranscript={displayedTranscript}
+            feedbackMessage={feedbackMessage}
+            sampleAnswer={sampleAnswer}
+            targetLevel={targetLevel}
+            category={currentQuestion?.category}
+            tags={currentQuestion?.tags ?? []}
+            onNextQuestion={handleAdvance}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <MainSection
       targetLevelLabel={targetLevelLabel}
@@ -146,7 +155,7 @@ export default function PracticeScreen() {
       questionError={questionError}
       errorMessage={errorMessage}
     >
-      {renderContent()}
+      {renderIdleContent()}
     </MainSection>
   );
 }
