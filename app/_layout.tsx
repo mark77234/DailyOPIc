@@ -7,11 +7,10 @@ import * as Updates from "expo-updates";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import "react-native-reanimated";
 import "../global.css";
 
+import { UpdateCheckingScreen } from "@/components/update-checking-screen";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export const unstable_settings = {
@@ -19,19 +18,7 @@ export const unstable_settings = {
 };
 
 const UPDATE_CHECK_MESSAGE = "최신 업데이트 확인 중 입니다...";
-
-function UpdateCheckingScreen({ message }: { message: string }) {
-  return (
-    <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-1 items-center justify-center px-6">
-        <ActivityIndicator size="small" color="#4f46e5" />
-        <Text className="mt-3 text-sm font-medium text-gray-600">
-          {message}
-        </Text>
-      </View>
-    </SafeAreaView>
-  );
-}
+const DEV_UPDATE_CHECK_DELAY_MS = 5000;
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -61,6 +48,11 @@ export default function RootLayout() {
       } catch (error) {
         console.error("Failed to check for updates", error);
       } finally {
+        if (__DEV__) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, DEV_UPDATE_CHECK_DELAY_MS),
+          );
+        }
         if (isMounted) {
           setIsCheckingUpdate(false);
         }
