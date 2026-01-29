@@ -63,7 +63,7 @@ export default function PracticeScreen() {
           duration: 0,
           useNativeDriver: true,
         }),
-      ])
+      ]),
     );
 
     pulseAnimationRef.current.start();
@@ -84,17 +84,17 @@ export default function PracticeScreen() {
   const handleAdvance = useCallback(
     () =>
       handleNextQuestion().catch((error) =>
-        console.error("Failed to move to next question", error)
+        console.error("Failed to move to next question", error),
       ),
-    [handleNextQuestion]
+    [handleNextQuestion],
   );
 
   const handleSkip = useCallback(
     () =>
       handleSkipQuestion().catch((error) =>
-        console.error("Failed to skip question", error)
+        console.error("Failed to skip question", error),
       ),
-    [handleSkipQuestion]
+    [handleSkipQuestion],
   );
 
   const renderContent = () => {
@@ -150,9 +150,6 @@ export default function PracticeScreen() {
       <View className="flex-1 px-5 pt-4">
         <View className="flex-row items-start justify-between">
           <View>
-            <Text className="text-2xl font-semibold text-gray-900">
-              연습 하기
-            </Text>
             <View className="mt-1 flex-row items-center gap-2">
               <Text className="text-base text-gray-600">목표등급:</Text>
               <Text className="text-base font-semibold text-primary-600">
