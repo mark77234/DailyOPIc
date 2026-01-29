@@ -11,17 +11,26 @@ const ICONS = {
   splashDark: "./assets/icons/splash-icon-dark.png",
 };
 
+const EAS_PROJECT_ID = "750ea314-bec3-4af3-98d7-b92b7ac97282";
+const UPDATES_URL = `https://u.expo.dev/${EAS_PROJECT_ID}`;
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
 
   name: "데일리 오픽",
   slug: "opic_mobile",
-  version: "1.0.3",
+  version: "1.0.5",
 
   extra: {
     eas: {
-      projectId: "750ea314-bec3-4af3-98d7-b92b7ac97282",
+      projectId: EAS_PROJECT_ID,
     },
+  },
+  updates: {
+    url: UPDATES_URL,
+  },
+  runtimeVersion: {
+    policy: "appVersion",
   },
   orientation: "portrait",
   scheme: "opicmobile",
@@ -38,7 +47,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     supportsTablet: true,
     bundleIdentifier: "com.mark.opicmobile",
-    buildNumber: "3",
+    buildNumber: "4",
     icon: {
       light: ICONS.iosLight,
       dark: ICONS.iosDark,
