@@ -108,6 +108,7 @@ export default function PracticeScreen() {
         pulseAnim={pulseAnim}
         isListening={isListening}
         onToggle={handleToggleRecognition}
+        onSkipQuestion={handleSkip}
       />
     );
   };
@@ -148,7 +149,6 @@ export default function PracticeScreen() {
   return (
     <MainSection
       targetLevelLabel={targetLevelLabel}
-      onSkipQuestion={handleSkip}
       onResetTarget={() => router.push("/onboarding")}
       questionsLoading={questionsLoading}
       currentQuestion={currentQuestion}

@@ -12,7 +12,6 @@ import type { QuestionDoc } from "@/types/question";
 
 type MainSectionProps = {
   targetLevelLabel: string;
-  onSkipQuestion: () => void;
   onResetTarget: () => void;
   questionsLoading: boolean;
   currentQuestion: QuestionDoc | null;
@@ -23,7 +22,6 @@ type MainSectionProps = {
 
 export function MainSection({
   targetLevelLabel,
-  onSkipQuestion,
   onResetTarget,
   questionsLoading,
   currentQuestion,
@@ -43,15 +41,6 @@ export function MainSection({
               </Text>
             </View>
           </View>
-          <TouchableOpacity
-            activeOpacity={0.85}
-            onPress={onSkipQuestion}
-            className="rounded-full border border-gray-300 bg-white px-4 py-2"
-          >
-            <Text className="text-base font-semibold text-gray-700">
-              다른 질문
-            </Text>
-          </TouchableOpacity>
         </View>
 
         <TouchableOpacity
