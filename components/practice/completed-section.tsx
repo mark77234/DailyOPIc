@@ -110,28 +110,32 @@ export function CompletedSection({
           </View>
         </View>
 
-        <View className="my-4 rounded-3xl border border-primary-400 bg-primary-100 p-6 ">
-          <View className="items-center border border-primary-600 rounded-full bg-white p-4">
-            <Text className="text-lg font-bold text-primary-600 ">
-              {level} 등급 피드백
+        <View className="my-4">
+          <View className="items-center">
+            <View className="z-10 rounded-full border border-primary-600 bg-white px-6 py-2">
+              <Text className="text-lg font-bold text-primary-600">
+                {level} 등급 피드백
+              </Text>
+            </View>
+          </View>
+          <View className="-mt-6 rounded-3xl border border-primary-600 bg-primary-100 px-8 pb-6 pt-10">
+            <Text className="text-base text-primary-600">
+              {feedbackMessage}
             </Text>
           </View>
-          <Text className="mt-2 text-base leading-6 text-primary-600">
-            {feedbackMessage}
-          </Text>
         </View>
 
-        <View className="my-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 ">
+        <View className="my-4 rounded-3xl border border-emerald-200 bg-emerald-50 p-6 ">
           <Text className="text-xl font-semibold">
             {targetLevel ?? level} 수준의 샘플 답변
           </Text>
-          <Text className="mt-3 text-base leading-6 text-emerald-900">
-            {sampleAnswer}
+          <Text className="mt-3 text-lg text-gray-700">
+            {`"${sampleAnswer}"`}
           </Text>
         </View>
 
         <View className="mt-4 mx-2">
-          <Text className="text-sm leading-5 text-gray-400">
+          <Text className="text-sm text-gray-400">
             표시된 등급은 재미 요소일 뿐이며 실제 OPIc 등급과 다를 수 있어요.
             {"\n"}
             현재 산정 기준: 단어 수와 평균 문장 길이 중심 + 반복 단어, 군더더기
