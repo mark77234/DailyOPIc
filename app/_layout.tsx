@@ -11,6 +11,7 @@ import "react-native-reanimated";
 import "../global.css";
 
 import { UpdateCheckingScreen } from "@/components/update-checking-screen";
+import { ToastProvider } from "@/components/ui/toast";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export const unstable_settings = {
@@ -68,27 +69,29 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      {isCheckingUpdate ? (
-        <UpdateCheckingScreen message={updateMessage} />
-      ) : (
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="onboarding/index"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="history/[id]"
-            options={{ title: "연습 기록", headerBackTitle: "Back" }}
-          />
-          <Stack.Screen
-            name="question-filters"
-            options={{ title: "Question Filters" }}
-          />
-          <Stack.Screen name="admin/index" options={{ title: "Admin Seed" }} />
-        </Stack>
-      )}
-      <StatusBar style="auto" />
+      <ToastProvider>
+        {isCheckingUpdate ? (
+          <UpdateCheckingScreen message={updateMessage} />
+        ) : (
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="onboarding/index"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="history/[id]"
+              options={{ title: "연습 기록", headerBackTitle: "Back" }}
+            />
+            <Stack.Screen
+              name="question-filters"
+              options={{ title: "Question Filters" }}
+            />
+            <Stack.Screen name="admin/index" options={{ title: "Admin Seed" }} />
+          </Stack>
+        )}
+        <StatusBar style="auto" />
+      </ToastProvider>
     </ThemeProvider>
   );
 }
