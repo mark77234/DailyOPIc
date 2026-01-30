@@ -41,10 +41,10 @@ export function MainSection({
             className="rounded-full border border-primary-400 px-4 py-2"
             style={{
               shadowColor: colors.primary[600], // primary-600
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.25,
+              shadowOffset: { width: 0, height: 0 },
+              shadowOpacity: 0.1,
               shadowRadius: 6,
-              elevation: 5, // Android
+              elevation: 1, // Android
             }}
           >
             <Text className="text-lg font-semibold text-primary-600">

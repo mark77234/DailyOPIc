@@ -1,6 +1,7 @@
 import { Animated, Text, TouchableOpacity, View } from "react-native";
 
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { colors } from "@/constants/colors";
 
 type ListeningSectionProps = {
   pulseAnim: Animated.Value;
@@ -61,9 +62,16 @@ export function ListeningSection({
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={onToggle}
-            className={`h-20 w-20 items-center justify-center rounded-full shadow-xl ${
+            className={`h-20 w-20 items-center justify-center rounded-full  ${
               isListening ? "bg-red-500" : "bg-primary-600"
             }`}
+            style={{
+              shadowColor: isListening ? colors.red : colors.primary[600], // iOS 그림자 색
+              shadowOffset: { width: 0, height: 8 },
+              shadowOpacity: 0.4,
+              shadowRadius: 10,
+              elevation: 10, // Android
+            }}
           >
             <IconSymbol
               name={isListening ? "stop.fill" : "mic.fill"}
@@ -73,22 +81,27 @@ export function ListeningSection({
           </TouchableOpacity>
         </View>
 
-        <Text className="mt-3 text-sm font-semibold text-gray-800">
+        <Text className="mt-3 text-lg font-semibold text-gray-800">
           {isListening ? "Tap to Stop" : "Tap to Answer"}
         </Text>
-        <Text className="mt-1 text-xs text-gray-500">
+        <Text className="mt-1 text-lg text-gray-500">
           {isListening ? "Listening..." : "녹음을 시작하려면 탭하세요."}
         </Text>
-      </View>
 
-      <View className="pb-4">
         <TouchableOpacity
           activeOpacity={0.85}
           onPress={onSkipQuestion}
-          className="w-full rounded-full border border-gray-300 bg-white py-3 items-center"
+          className="mt-12 rounded-full border border-primary-600 bg-white px-4 py-3 items-center"
+          style={{
+            shadowColor: colors.primary[600], // primary-600
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 0.1,
+            shadowRadius: 6,
+            elevation: 1, // Android
+          }}
         >
-          <Text className="text-base font-semibold text-gray-700">
-            다른 질문
+          <Text className="text-lg font-semibold text-primary-600">
+            다른 질문으로 넘어가기
           </Text>
         </TouchableOpacity>
       </View>
