@@ -18,6 +18,8 @@ const MAPPING = {
   'mic.fill': 'keyboard-voice',
   'stop.fill': 'stop',
   'checkmark.circle.fill': 'check-circle',
+  'info.circle.fill': 'info',
+  'xmark.octagon.fill': 'error',
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
