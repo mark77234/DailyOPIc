@@ -13,6 +13,7 @@ export const colors = {
   primary,
   black: "#000000",
   white: "#FFFFFF",
+  red: "#FF0000",
 };
 
 export const themeColors = {
