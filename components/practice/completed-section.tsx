@@ -1,5 +1,6 @@
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
+import { colors } from "@/constants/colors";
 import type { LevelId } from "@/constants/opic";
 import type { OpicEvaluationResult } from "@/utils/opic-evaluator";
 
@@ -27,31 +28,45 @@ export function CompletedSection({
   const { level, wordCount, sentenceCount } = evaluation;
 
   return (
-    <View className="mt-6 flex-1">
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 32 }}
-      >
-        <View className="rounded-3xl border border-primary-400 bg-white px-5 py-6 my-4">
-          <Text className="text-xl font-bold text-primary-600">나의 답변</Text>
-          <Text className="mt-3 text-lg text-gray-700">
-            {`"${displayedTranscript}"`}
-          </Text>
-          <View className="mt-3 flex-row flex-wrap gap-2">
-            <View className="rounded-full bg-primary-600 px-3 py-1">
-              <Text className="text-sm font-semibold text-white">
-                문장 수: {sentenceCount}
-              </Text>
+    <View className="mt-6 flex-1 ">
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View>
+          <View className="rounded-3xl border border-primary-400 bg-white px-5 py-6">
+            <Text className="text-xl font-bold text-primary-600">
+              나의 답변
+            </Text>
+            <Text className="mt-3 text-lg text-gray-700">
+              {`"${displayedTranscript}"`}
+            </Text>
+            <View className="mt-3 flex-row flex-wrap gap-2">
+              <View className="rounded-full bg-primary-600 px-3 py-1">
+                <Text className="text-sm font-semibold text-white">
+                  문장 수: {sentenceCount}
+                </Text>
+              </View>
+              <View className="rounded-full bg-primary-600 px-3 py-1">
+                <Text className="text-sm font-semibold text-white">
+                  단어 수: {wordCount}
+                </Text>
+              </View>
             </View>
-            <View className="rounded-full bg-primary-600 px-3 py-1">
-              <Text className="text-sm font-semibold text-white">
-                단어 수: {wordCount}
-              </Text>
-            </View>
+            <Text className="mt-2 text-sm text-gray-500">
+              이번 답변에서 감지한 기본 길이 정보예요.
+            </Text>
           </View>
-          <Text className="mt-2 text-sm text-gray-500">
-            이번 답변에서 감지한 기본 길이 정보예요.
-          </Text>
+          <View className="items-center self-center">
+            <View className="h-16 w-px bg-primary-400" />
+            <View
+              className="h-2 w-2 rounded-full bg-primary-600"
+              style={{
+                shadowColor: colors.primary["600"],
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.8,
+                shadowRadius: 4,
+                elevation: 10,
+              }}
+            />
+          </View>
         </View>
 
         <View className="rounded-3xl bg-primary-600 p-5 my-4">
@@ -107,8 +122,8 @@ export function CompletedSection({
         </View>
 
         <View className="my-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 ">
-          <Text className="text-xl font-semibold text-emerald-900">
-            샘플 답안 ({targetLevel ?? level})
+          <Text className="text-xl font-semibold">
+            {targetLevel ?? level} 수준의 샘플 답변
           </Text>
           <Text className="mt-3 text-base leading-6 text-emerald-900">
             {sampleAnswer}
