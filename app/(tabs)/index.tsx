@@ -7,6 +7,7 @@ import { AnalyzingSection } from "@/components/practice/analyzing-section";
 import { CompletedSection } from "@/components/practice/completed-section";
 import { ListeningSection } from "@/components/practice/listening-section";
 import { MainSection } from "@/components/practice/main-section";
+import { useToast } from "@/components/ui/toast";
 import {
   FEEDBACK_BY_LEVEL,
   SAMPLE_ANSWER_BY_LEVEL,
@@ -30,6 +31,8 @@ export default function PracticeScreen() {
     handleSkipQuestion,
     handleNextQuestion,
   } = usePracticeLogic();
+  const { show } = useToast();
+  const lastErrorRef = useRef<string | null>(null);
 
   const pulseAnim = useRef(new Animated.Value(0)).current;
   const pulseAnimationRef = useRef<Animated.CompositeAnimation | null>(null);
@@ -73,6 +76,24 @@ export default function PracticeScreen() {
 
   useEffect(() => stopPulseAnimation, [stopPulseAnimation]);
 
+  useEffect(() => {
+    if (!errorMessage) {
+      lastErrorRef.current = null;
+      return;
+    }
+
+    if (lastErrorRef.current === errorMessage) {
+      return;
+    }
+
+    lastErrorRef.current = errorMessage;
+    show({
+      title: "알림",
+      message: errorMessage,
+      variant: "error",
+    });
+  }, [errorMessage, show]);
+
   const handleAdvance = useCallback(
     () =>
       handleNextQuestion().catch((error) =>
@@ -113,49 +134,54 @@ export default function PracticeScreen() {
     );
   };
 
-  if (isAnalyzing) {
+  const showCompleted = isCompleted && !errorMessage;
+
+  const renderContent = () => {
+    if (isAnalyzing) {
+      return (
+        <SafeAreaView className="flex-1 bg-white">
+          <AnalyzingSection />
+        </SafeAreaView>
+      );
+    }
+
+    if (showCompleted) {
+      const feedbackMessage = FEEDBACK_BY_LEVEL[evaluationResult.level];
+      const levelForSample = targetLevel ?? evaluationResult.level;
+      const fallbackSample = SAMPLE_ANSWER_BY_LEVEL[levelForSample];
+      const sampleAnswer =
+        currentQuestion?.exampleAnswer?.trim() || fallbackSample.en;
+
+      return (
+        <SafeAreaView className="flex-1 bg-white">
+          <View className="flex-1 px-5 pt-4">
+            <CompletedSection
+              evaluation={evaluationResult}
+              displayedTranscript={displayedTranscript}
+              feedbackMessage={feedbackMessage}
+              sampleAnswer={sampleAnswer}
+              targetLevel={targetLevel}
+              category={currentQuestion?.category}
+              tags={currentQuestion?.tags ?? []}
+              onNextQuestion={handleAdvance}
+            />
+          </View>
+        </SafeAreaView>
+      );
+    }
+
     return (
-      <SafeAreaView className="flex-1 bg-white">
-        <AnalyzingSection />
-      </SafeAreaView>
+      <MainSection
+        targetLevelLabel={targetLevelLabel}
+        onResetTarget={() => router.push("/onboarding")}
+        questionsLoading={questionsLoading}
+        currentQuestion={currentQuestion}
+        questionError={questionError}
+      >
+        {renderIdleContent()}
+      </MainSection>
     );
-  }
+  };
 
-  if (isCompleted) {
-    const feedbackMessage = FEEDBACK_BY_LEVEL[evaluationResult.level];
-    const levelForSample = targetLevel ?? evaluationResult.level;
-    const fallbackSample = SAMPLE_ANSWER_BY_LEVEL[levelForSample];
-    const sampleAnswer =
-      currentQuestion?.exampleAnswer?.trim() || fallbackSample.en;
-
-    return (
-      <SafeAreaView className="flex-1 bg-white">
-        <View className="flex-1 px-5 pt-4">
-          <CompletedSection
-            evaluation={evaluationResult}
-            displayedTranscript={displayedTranscript}
-            feedbackMessage={feedbackMessage}
-            sampleAnswer={sampleAnswer}
-            targetLevel={targetLevel}
-            category={currentQuestion?.category}
-            tags={currentQuestion?.tags ?? []}
-            onNextQuestion={handleAdvance}
-          />
-        </View>
-      </SafeAreaView>
-    );
-  }
-
-  return (
-    <MainSection
-      targetLevelLabel={targetLevelLabel}
-      onResetTarget={() => router.push("/onboarding")}
-      questionsLoading={questionsLoading}
-      currentQuestion={currentQuestion}
-      questionError={questionError}
-      errorMessage={errorMessage}
-    >
-      {renderIdleContent()}
-    </MainSection>
-  );
+  return renderContent();
 }

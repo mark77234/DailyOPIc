@@ -244,18 +244,30 @@ export const usePracticeLogic = () => {
 
   const handleSpeechError = useCallback(
     (event: ExpoSpeechRecognitionErrorEvent) => {
+      clearAnalysisTimer();
       setPhase("idle");
       setErrorMessage(
         `${event.message}. 마이크를 휴대폰 가까이에 두고 다시 이어서 말해 주세요.`
       );
     },
-    []
+    [clearAnalysisTimer]
   );
 
   useSpeechRecognitionEvent("start", handleSpeechStart);
   useSpeechRecognitionEvent("end", handleSpeechEnd);
   useSpeechRecognitionEvent("result", handleSpeechResult);
   useSpeechRecognitionEvent("error", handleSpeechError);
+
+  useEffect(() => {
+    if (!errorMessage) {
+      return;
+    }
+
+    if (phase !== "idle") {
+      clearAnalysisTimer();
+      setPhase("idle");
+    }
+  }, [clearAnalysisTimer, errorMessage, phase]);
 
   const evaluationInput = transcript || DEFAULT_TRANSCRIPT;
   const evaluationResult: OpicEvaluationResult = useMemo(

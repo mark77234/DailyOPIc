@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { IconSymbol } from "@/components/ui/icon-symbol";
 import { colors } from "@/constants/colors";
 import type { QuestionDoc } from "@/types/question";
 
@@ -12,7 +11,6 @@ type MainSectionProps = {
   questionsLoading: boolean;
   currentQuestion: QuestionDoc | null;
   questionError?: string | null;
-  errorMessage?: string | null;
   children: ReactNode;
 };
 
@@ -22,7 +20,6 @@ export function MainSection({
   questionsLoading,
   currentQuestion,
   questionError,
-  errorMessage,
   children,
 }: MainSectionProps) {
   return (
@@ -94,28 +91,6 @@ export function MainSection({
             {currentQuestion?.category ?? "No Category"}
           </Text>
         </View>
-
-        {errorMessage && (
-          <View className="mt-3 flex-row items-start gap-2 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3">
-            <IconSymbol
-              name="exclamationmark.triangle.fill"
-              size={18}
-              color="#b45309"
-              style={{ marginTop: 2 }}
-            />
-            <View className="flex-1">
-              <Text className="text-sm font-semibold text-amber-900">
-                음성 인식이 잠시 멈췄어요
-              </Text>
-              <Text className="mt-1 text-xs leading-5 text-amber-800">
-                {errorMessage}
-              </Text>
-              <Text className="mt-1 text-[11px] font-semibold text-amber-900">
-                마이크를 휴대폰 가까이에 대고 이어서 쭉 말씀해 주세요.
-              </Text>
-            </View>
-          </View>
-        )}
 
         {children}
       </View>
