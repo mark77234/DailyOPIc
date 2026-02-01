@@ -61,6 +61,8 @@ export default function ProgressScreen() {
     () => distribution.reduce((max, [, count]) => Math.max(max, count), 0),
     [distribution]
   );
+  const chartHeight = 88;
+  const chartMinHeight = 14;
 
   const handleOpenDetail = useCallback((entryId: string) => {
     router.push({ pathname: "/history/[id]", params: { id: entryId } });
@@ -126,37 +128,40 @@ export default function ProgressScreen() {
           </View>
         ) : (
           <>
-            <View className="mt-6 rounded-3xl border border-gray-100 bg-white p-5 shadow-sm">
-              <View className="flex-row items-center justify-between">
-                <Text className="text-sm font-semibold text-gray-700">요약</Text>
-                <Text className="text-[11px] font-semibold text-gray-400">
-                  {history.length ? `최근 ${history.length}회` : "기록 없음"}
-                </Text>
+            <View className="mt-8 rounded-3xl border border-primary-300 bg-white px-4 pb-5 pt-7">
+              <View className="absolute -top-4 left-0 right-0 items-center">
+                <View className="rounded-full border border-primary-300 bg-white px-6 py-1.5">
+                  <Text className="text-sm font-semibold text-primary-600">
+                    요약
+                  </Text>
+                </View>
               </View>
-              <View className="mt-4 flex-row gap-3">
+              <View className="flex-row gap-3">
                 <View className="flex-1 rounded-2xl bg-gray-50 p-4">
-                  <Text className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                  <Text className="text-xs font-semibold text-gray-500">
                     총 시도
                   </Text>
                   <Text className="mt-2 text-2xl font-bold text-gray-900">
                     {history.length}회
                   </Text>
                 </View>
-                <View className="flex-1 rounded-2xl bg-indigo-50 p-4">
-                  <Text className="text-xs font-semibold uppercase tracking-wide text-indigo-500">
+                <View className="flex-1 rounded-2xl bg-primary-100 p-4">
+                  <Text className="text-xs font-semibold text-primary-600">
                     최근 등급
                   </Text>
-                  <Text className="mt-2 text-2xl font-bold text-indigo-700">
+                  <Text className="mt-2 text-2xl font-bold text-primary-600">
                     {lastEntry?.evaluationLevel ?? "-"}
                   </Text>
-                  <Text className="mt-1 text-[11px] font-semibold text-indigo-500">
-                    목표 {lastEntry?.targetLevel ?? "미설정"}
-                  </Text>
+                  <View className="mt-3 flex-row items-center justify-end">
+                    <Text className="rounded-full bg-primary-600 px-3 py-1 text-[11px] font-semibold text-white">
+                      목표 {lastEntry?.targetLevel ?? "미설정"}
+                    </Text>
+                  </View>
                 </View>
               </View>
               <View className="mt-3 flex-row gap-3">
                 <View className="flex-1 rounded-2xl bg-gray-50 p-4">
-                  <Text className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                  <Text className="text-xs font-semibold text-gray-500">
                     최근 연습
                   </Text>
                   <Text className="mt-2 text-sm font-semibold text-gray-900">
@@ -164,7 +169,7 @@ export default function ProgressScreen() {
                   </Text>
                 </View>
                 <View className="flex-1 rounded-2xl bg-gray-50 p-4">
-                  <Text className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                  <Text className="text-xs font-semibold text-gray-500">
                     카테고리
                   </Text>
                   <Text
@@ -173,7 +178,7 @@ export default function ProgressScreen() {
                   >
                     {lastEntry?.category ?? "-"}
                   </Text>
-                  <Text className="mt-1 text-[11px] text-gray-500">
+                  <Text className="mt-1 text-[11px] text-right text-gray-500">
                     {lastEntry?.questionLevel
                       ? `문제 레벨 ${lastEntry.questionLevel}`
                       : "문제 레벨 -"}
@@ -222,7 +227,7 @@ export default function ProgressScreen() {
                       key={entry.id}
                       activeOpacity={0.9}
                       onPress={() => handleOpenDetail(entry.id)}
-                      className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm"
+                      className="rounded-2xl border border-primary-200 bg-white p-4"
                     >
                       <View className="flex-row items-start justify-between gap-3">
                         <View className="flex-1">
@@ -280,31 +285,59 @@ export default function ProgressScreen() {
             </View>
 
             {history.length > 0 && distribution.length > 0 && (
-              <View className="mt-8 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-                <Text className="text-sm font-semibold text-gray-800">
-                  등급 분포
-                </Text>
-                <View className="mt-4 gap-3">
-                  {distribution.map(([level, count]) => (
-                    <View key={level} className="flex-row items-center gap-3">
-                      <Text className="w-10 text-xs font-semibold text-gray-600">
-                        {level}
-                      </Text>
-                      <View className="h-2 flex-1 overflow-hidden rounded-full bg-gray-100">
-                        <View
-                          className="h-2 rounded-full bg-indigo-500"
-                          style={{
-                            width: maxCount
-                              ? `${(count / maxCount) * 100}%`
-                              : "0%",
-                          }}
-                        />
-                      </View>
-                      <Text className="w-10 text-right text-xs font-semibold text-gray-600">
-                        {count}회
-                      </Text>
-                    </View>
-                  ))}
+              <View className="mt-8 rounded-3xl border border-primary-100 bg-white p-5">
+                <View className="flex-row items-center justify-between">
+                  <View>
+                    <Text className="text-sm font-semibold text-gray-800">
+                      등급 분포
+                    </Text>
+                    <Text className="mt-1 text-xs text-gray-500">
+                      최근 {history.length}회 기준
+                    </Text>
+                  </View>
+                  <View className="rounded-full bg-primary-100 px-3 py-1">
+                    <Text className="text-[11px] font-semibold text-primary-600">
+                      바 차트
+                    </Text>
+                  </View>
+                </View>
+                <View className="mt-6">
+                  <View className="flex-row items-end justify-between gap-3">
+                    {distribution.map(([level, count]) => {
+                      const barHeight = maxCount
+                        ? Math.max(
+                            chartMinHeight,
+                            Math.round((count / maxCount) * chartHeight)
+                          )
+                        : chartMinHeight;
+                      const isTop = count === maxCount;
+                      return (
+                        <View key={level} className="flex-1 items-center">
+                          <Text
+                            className={`mb-2 text-[11px] font-semibold ${
+                              isTop ? "text-primary-600" : "text-gray-400"
+                            }`}
+                          >
+                            {count}회
+                          </Text>
+                          <View
+                            className="w-full max-w-[28px] items-center justify-end rounded-full bg-primary-100"
+                            style={{ height: chartHeight }}
+                          >
+                            <View
+                              className={`w-full rounded-full ${
+                                isTop ? "bg-primary-600" : "bg-primary-400"
+                              }`}
+                              style={{ height: barHeight }}
+                            />
+                          </View>
+                          <Text className="mt-2 text-xs font-semibold text-gray-600">
+                            {level}
+                          </Text>
+                        </View>
+                      );
+                    })}
+                  </View>
                 </View>
               </View>
             )}
