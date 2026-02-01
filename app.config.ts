@@ -19,7 +19,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 
   name: "데일리 오픽",
   slug: "opic_mobile",
-  version: "1.0.5",
+  version: "1.0.7",
 
   extra: {
     eas: {
@@ -47,7 +47,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     supportsTablet: true,
     bundleIdentifier: "com.mark.opicmobile",
-    buildNumber: "4",
+    buildNumber: "6",
     icon: {
       light: ICONS.iosLight,
       dark: ICONS.iosDark,
@@ -82,6 +82,28 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 
   plugins: [
     "expo-router",
+
+    /**
+     * ✅ iOS Static Frameworks (필요시)
+     */
+    [
+      "expo-build-properties",
+      {
+        ios: {
+          useFrameworks: "static",
+        },
+      },
+    ],
+
+    /**
+     * ✅ Google AdMob (iOS)
+     */
+    [
+      "react-native-google-mobile-ads",
+      {
+        iosAppId: "ca-app-pub-5460686409666356~8798659058",
+      },
+    ],
 
     /**
      * Splash Screen (Light / Dark)
