@@ -21,6 +21,7 @@ export default function TabLayout() {
   const [checkingLevel, setCheckingLevel] = useState(true);
   const bannerRef = useRef<BannerAd>(null);
   const insets = useSafeAreaInsets();
+  const isAdShow = false;
   const adUnitId = __DEV__
     ? TestIds.ADAPTIVE_BANNER
     : "ca-app-pub-5460686409666356/5124626013";
@@ -104,19 +105,21 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
-      <View
-        style={{
-          alignItems: "center",
-          backgroundColor: colors.white,
-          paddingBottom: Math.max(insets.bottom, 8),
-        }}
-      >
-        <BannerAd
-          ref={bannerRef}
-          unitId={adUnitId}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-        />
-      </View>
+      {(!__DEV__ || isAdShow) && (
+        <View
+          style={{
+            alignItems: "center",
+            backgroundColor: colors.white,
+            paddingBottom: Math.max(insets.bottom, 8),
+          }}
+        >
+          <BannerAd
+            ref={bannerRef}
+            unitId={adUnitId}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          />
+        </View>
+      )}
     </View>
   );
 }
