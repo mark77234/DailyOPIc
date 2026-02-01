@@ -16,6 +16,7 @@ import {
   removePracticeHistoryEntry,
   type PracticeHistoryEntry,
 } from "@/utils/practice-history";
+import LevelDistributionChart from "@/components/progress/level-distribution-chart";
 
 const formatDateTime = (value: string) =>
   new Date(value).toLocaleString(undefined, {
@@ -57,12 +58,6 @@ export default function ProgressScreen() {
     () => Object.entries(totals).sort((a, b) => b[1] - a[1]),
     [totals]
   );
-  const maxCount = useMemo(
-    () => distribution.reduce((max, [, count]) => Math.max(max, count), 0),
-    [distribution]
-  );
-  const chartHeight = 88;
-  const chartMinHeight = 14;
 
   const handleOpenDetail = useCallback((entryId: string) => {
     router.push({ pathname: "/history/[id]", params: { id: entryId } });
@@ -285,61 +280,10 @@ export default function ProgressScreen() {
             </View>
 
             {history.length > 0 && distribution.length > 0 && (
-              <View className="mt-8 rounded-3xl border border-primary-100 bg-white p-5">
-                <View className="flex-row items-center justify-between">
-                  <View>
-                    <Text className="text-sm font-semibold text-gray-800">
-                      등급 분포
-                    </Text>
-                    <Text className="mt-1 text-xs text-gray-500">
-                      최근 {history.length}회 기준
-                    </Text>
-                  </View>
-                  <View className="rounded-full bg-primary-100 px-3 py-1">
-                    <Text className="text-[11px] font-semibold text-primary-600">
-                      바 차트
-                    </Text>
-                  </View>
-                </View>
-                <View className="mt-6">
-                  <View className="flex-row items-end justify-between gap-3">
-                    {distribution.map(([level, count]) => {
-                      const barHeight = maxCount
-                        ? Math.max(
-                            chartMinHeight,
-                            Math.round((count / maxCount) * chartHeight)
-                          )
-                        : chartMinHeight;
-                      const isTop = count === maxCount;
-                      return (
-                        <View key={level} className="flex-1 items-center">
-                          <Text
-                            className={`mb-2 text-[11px] font-semibold ${
-                              isTop ? "text-primary-600" : "text-gray-400"
-                            }`}
-                          >
-                            {count}회
-                          </Text>
-                          <View
-                            className="w-full max-w-[28px] items-center justify-end rounded-full bg-primary-100"
-                            style={{ height: chartHeight }}
-                          >
-                            <View
-                              className={`w-full rounded-full ${
-                                isTop ? "bg-primary-600" : "bg-primary-400"
-                              }`}
-                              style={{ height: barHeight }}
-                            />
-                          </View>
-                          <Text className="mt-2 text-xs font-semibold text-gray-600">
-                            {level}
-                          </Text>
-                        </View>
-                      );
-                    })}
-                  </View>
-                </View>
-              </View>
+              <LevelDistributionChart
+                data={distribution.map(([level, count]) => ({ level, count }))}
+                totalCount={history.length}
+              />
             )}
           </>
         )}
